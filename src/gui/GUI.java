@@ -20,12 +20,20 @@ import javax.swing.JTextArea;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+/**
+ * Class containing GUI for chat client
+ * @author Natalie
+ *
+ */
 public class GUI {
 
 	public JFrame frmJchat;
 	private JTextField textField;
 	private static String username = "";
 	public static JTextArea textArea;
+	private JScrollPane scrollPane;
+	
+	//print writer for writing messages to the server
 	PrintWriter pw;
 	
 	//contains message in textfield
@@ -33,7 +41,7 @@ public class GUI {
 	
 	//contents of whole text pane
 	private String text = "";
-	private JScrollPane scrollPane;
+	
 
 
 	/**
@@ -47,7 +55,6 @@ public class GUI {
 	public GUI(String username, PrintWriter pw) {
 		this.username = username;
 		this.pw = pw;
-		//initialize();
 	}
 
 	/**
@@ -60,6 +67,7 @@ public class GUI {
 		frmJchat.setBounds(100, 100, 450, 300);
 		frmJchat.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmJchat.getContentPane().setLayout(null);
+		
 		// WindowListener to close connection when User closes chat window
 		frmJchat.addWindowListener(new WindowAdapter() {
 			/**
@@ -76,23 +84,18 @@ public class GUI {
 
 				// Close this PrintWriter
 				pw.close();
-
-				// Stop the ClientReadThread
-				//read.stop();
 			}
 		});
 
 		
 		textField = new JTextField();
 		
-		//add text to textpane on pressing enter
+		//send text to server on pressing enter
 		textField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				pw.println(username + ": " + textField.getText());
 				pw.flush();
-				//textArea.append(username + ": " + textField.getText() + "\n");
 				textField.setText("");
-				
 			}
 		});
 		textField.setBounds(224, 235, 200, 20);

@@ -6,13 +6,18 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+/**
+ * Class to start up the Server. 
+ * @author Natalie
+ *
+ */
 public class ChatServer {
 
 	// List to store PrintWriters of clients
 		static ArrayList<PrintWriter> printwriterList;
 		// List to store messages sent by all clients
 		static ArrayList<String> messageList;
-		
+		//Server thread to do processing
 		private static ServerThread thread;
 	
 	

@@ -7,6 +7,11 @@ import java.net.Socket;
 
 import chat.ChatServer;
 
+/**
+ * Class containing thread to process messages in the server
+ * @author Natalie
+ *
+ */
 public class ServerThread extends Thread {
 	
 	Socket clientSocket;
@@ -27,8 +32,7 @@ public class ServerThread extends Thread {
 		System.out.println("Started Server Thread");
 		try {
 			// create a BufferedReader to read from client
-			BufferedReader br = new BufferedReader(new InputStreamReader(
-					clientSocket.getInputStream()));
+			BufferedReader br = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			
 
 			while (true) {
@@ -40,6 +44,7 @@ public class ServerThread extends Thread {
 				// disconnecting Client)
 				if (message == null)
 					break;
+				//if new user message, send message to all clients saying that they have joined.
 				else if(message.startsWith("$U$")){
 					ChatServer.send(message.substring(3) + " has joined the chat!");
 				}

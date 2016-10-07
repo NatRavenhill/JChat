@@ -5,9 +5,16 @@ import java.io.IOException;
 
 import gui.GUI;
 
+/**
+ * Class containing thread that processes messages read by a client
+ * @author Natalie
+ *
+ */
 public class ClientReadThread extends Thread{
 	
+	//Buffered Reader to contain messages
 	BufferedReader br;
+	//GUI for chat client
 	GUI gui;
 	
 	/**
@@ -38,7 +45,7 @@ public class ClientReadThread extends Thread{
 				
 				// write this message in the text area of the client
 				gui.textArea.append(currentMessage + "\n");
-			}
+				}
 			}
 			catch(IOException e){
 				e.printStackTrace();

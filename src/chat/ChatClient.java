@@ -1,9 +1,6 @@
 package chat;
 
-import java.awt.event.WindowAdapter;
 import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -11,54 +8,44 @@ import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
 import gui.GUI;
 
+/**
+ * Class containing a thread that opens a socket for a client on the network to start the chat
+ * @author Natalie
+ *
+ */
 public class ChatClient extends Thread {
 	
-	public static String answer;
+	//PrintWriter for writing to socket
 	PrintWriter pw;
+	//String to hold current user's username
 	String username;
+	//GUI for chat client
 	GUI gui;
 	
-	public ChatClient() throws IOException{
-		
-		//open the socket
-		
-		
-		
-		
-		//read and write to stream
-		//String answer = input.readLine();
-		//System.out.println(answer);
-		
-		
-		//close the streams
-		//input.close();
-		
-		//close the socket
-		//s.close();
-		//System.exit(0);
-	}
 	
+	/**
+	 * sets up the Socket to read messages 
+	 * @throws UnknownHostException
+	 */
 	public void setup() throws UnknownHostException{
 		
-		
 		// Create InetAdress to store location of server
-				// (CHANGE THIS TO LOCATION OF SERVER MACHINE WHEN NETWORKING ON
-				// MULTIPLE MACHINES)
+		// (CHANGE THIS TO LOCATION OF SERVER MACHINE WHEN NETWORKING ON
+		// MULTIPLE MACHINES)
 		InetAddress localhost = InetAddress.getLocalHost();
 		////String localhost = "192.168.1.103";
 		Integer portnum = 1090;
 		
 		//create socket with host
-		try{
-		Socket socket = new Socket(localhost,portnum);
-		// Get OUTPUTStream and store in a PrintWriter to WRITE TO SERVER
-	    pw = new PrintWriter(socket.getOutputStream());
+		try {
+			Socket socket = new Socket(localhost,portnum);
+			// Get OUTPUTStream and store in a PrintWriter to WRITE TO SERVER
+			pw = new PrintWriter(socket.getOutputStream());
 	    
 	    	//get username
 	  		String username = JOptionPane.showInputDialog("Enter your name:");
@@ -67,28 +54,24 @@ public class ChatClient extends Thread {
 	  		gui = new GUI(username, pw);
 	  		gui.createAndShowGUI();
 	  		
+	  		//Send a special message with the username to the server
 	  		pw.println("$U$" + username);
+	  		//clear the print writer
 	  		pw.flush();
-	  		
 		
-		//open an input stream and output stream
-	    BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+	  		//open an input stream and output stream
+	  		BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 	    
-	    // Create a thread to receive messages
-	 	ClientReadThread read = new ClientReadThread(input, gui);
+	  		// Create a thread to receive messages
+	  		ClientReadThread read = new ClientReadThread(input, gui);
 
-	 	// Start thread for receiving messages
-	 	read.start();
-	    
-	    //start close method
+	  		// Start thread for receiving messages
+	  		read.start();
 		}
 		catch(ConnectException e){
 			//Print an error message if the server is not currently running or client can't find server
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(null,
-				    "Server not found, please try again....",
-				    null,
-				    JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null,"Server not found, please try again....", null,JOptionPane.ERROR_MESSAGE);
 			System.exit(0);
 		}
 	    catch (IOException e) {
@@ -98,7 +81,9 @@ public class ChatClient extends Thread {
 	    
 	}
 	
-	//called when thread ran
+	/**
+	 * Called when thread started
+	 */
 	public void run(){
 		try {
 			this.setup();
