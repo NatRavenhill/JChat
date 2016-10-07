@@ -2,7 +2,7 @@
 
 The repository contains a Chat Client that was originally included in the Game I contributed to in my second year Team Project at university.  
 
-![](https://github.com/NatRavenhill/JChat/blob/master/chat.PNG)
+![](https://github.com/NatRavenhill/JChat/blob/master/chat2.PNG)
 
 It uses a Client-Server architecture. The Server is ran from the ChatServer class and contains a thread called ServerThread which processes incoming connections from clients and sends messages to them all using an ArrayList of different PrintWriters for each client.  
 
